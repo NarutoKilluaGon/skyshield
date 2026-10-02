@@ -1182,3 +1182,37 @@ suite) green in **both** modes — mock (unchanged semantics) and network
 - **Leftovers:** M4–M8 (file uploads, idempotent offline replay, server metrics,
   Kaggle-delay ML, assistant) remain backlog in `BACKEND_PLAN.md`; `DEPLOY.md`
   hardening (secret key, DEMO_MODE off, secure cookies) applies at real deployment.
+
+## BE-2 — Django backend M4–M6 completion + file uploads, idempotency & analytics (2026-10-02)
+
+Owner directive: complete milestones **M4–M6** of `docs/BACKEND_PLAN.md` (real file uploads & media serving, offline replay with `Idempotency-Key`, and server-side metrics/analytics calculations), wire the frontend services, and verify that all test suites pass in both mock and network modes.
+
+- **Backend M4 — Real file uploads & media serving:**
+  - Added `file` and `content_type` fields to `EvidenceItem` model and `attachments` JSON field to `CAPA` model (`0002_capa_attachments_evidenceitem_content_type_and_more.py`).
+  - Added `MediaUploadView` (`POST /api/v1/media/`): multipart/form-data intake, verifies file content, compares client SHA-256 against computed hash, applies size limit (`SKYSHIELD_MAX_UPLOAD_MB`, default 25 MB), saves under `SKYSHIELD_MEDIA_ROOT` with unique safe filename, returns `{ url, filename, contentType, size, sha256 }`.
+  - Added `MediaDownloadView` (`GET /api/v1/media/<path:filename>/`): enforces authentication (session cookie), verifies media file exists, streams exact bytes with correct content type and attachment/inline content disposition.
+  - Added client-side WebCrypto SHA-256 hashing in `src/lib/hash.ts` (`hashFileSha256`).
+- **Backend M5 — Idempotency-Key support & offline replay:**
+  - Added `IdempotencyRecord` model (`backend/core/models.py`) tracking idempotency key, session key, request path/method, request hash, response status, headers, and body.
+  - Implemented `IdempotencyMiddleware` (`backend/skyshield/middleware.py`): intercepts requests with `Idempotency-Key`, scopes keys to Django session, short-circuits repeated requests with cached response status/headers/body and adds header `Idempotency-Replayed: true`.
+- **Backend M6 — Server-side analytics & dashboard metrics:**
+  - Implemented `backend/core/analytics.py` (`compute_dashboard_metrics`, `compute_analytics_payload`) calculating live incident counts, severity distributions, 5x5 risk matrix positions, CAPA SLA series, Pareto factor analysis, 5 Whys statistics, and monthly occurrence trends matching frontend domain maths.
+  - Added `DashboardMetricsView` (`GET /api/v1/dashboard/metrics/`) and `AnalyticsView` (`GET /api/v1/analytics/`) respecting date-window, severity, aircraft, and type query params.
+  - Seed script `seed_demo` updated to generate realistic historical trend distributions.
+- **Frontend integration & service wiring:**
+  - `src/services/client.ts`: wired automatic `Idempotency-Key` headers on mutations, header-merge preservation, and `api.upload` for multipart file uploads.
+  - `src/services/operations.ts`: added `uploadEvidence`, `uploadComplianceAttachment`, `uploadCapaAttachment`, `getAnalytics`, `getCapaSlaSeries`, and `registerEvidenceLocal`.
+  - `src/lib/offline-queue.ts`: write-behind offline queue with idempotency keys and retry semantics (+4 tests).
+  - Report wizard (`guided-wizard.tsx`): computes real file SHA-256 on evidence drop, uploads on submission, records chain-of-custody hashes; detail evidence tab renders authenticated download links.
+  - CAPA and compliance pages wired to server file upload endpoints with blob-url stripping on persistence.
+- **Verification:**
+  - vitest units: **87/87 pass** (11 files, +4 offline-queue tests).
+  - Django tests: **118/118 pass** (27 new tests across `test_media`, `test_idempotency`, and `test_analytics`).
+  - Network API flows: `npm run api:flows` **72/72 pass** (live Django API + Vite preview proxy, real file upload & download byte check, idempotency replay, metrics/analytics validation).
+  - Mock browser flows: `npm run flows` **68/68 pass**.
+  - DOM smoke suite: `npm run smoke` **passed** ("No problems found").
+  - Typecheck: `npm run typecheck` clean.
+  - Lint: `npm run lint` 0 errors (11 pre-existing warnings OK).
+  - Production build: `npm run build` ok.
+  - Bundle size gate: `npm run size-gate` **471.7 kB** gzip (budget 508 kB).
+- **Leftovers:** M7 (Kaggle-2015 flight-delay ML) and M8 (assistant chatbot) remain backlog / owner-blocked in `docs/BACKEND_PLAN.md` pending owner confirmation on the specific 2015 dataset variant and LLM provider choice.

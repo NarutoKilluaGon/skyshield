@@ -115,3 +115,45 @@ which file you have so M7's ingest command targets it exactly.
 3. Frontend leftovers register (tail of `docs/STEP_LOG.md`) stays independent of
    all of this: S11b TanStack Query, dashboard-metrics fixture → store-live, bulk
    transitions through `transitionIncident`.
+
+---
+
+## 7. Addendum 2026-10-02 — BE-2: M4–M6 Implementation & Verification
+
+Milestones **M4–M6** are implemented and verified. The backend now supports full media file management, session-scoped request idempotency, and server-side aggregation for dashboard metrics and analytics.
+
+### 7.1 Architecture & Implementation Summary
+
+1. **M4 — Real File Uploads & Media Serving (`backend/core/views.py`, `backend/core/models.py`):**
+   - **Upload Endpoint (`POST /api/v1/media/`):** Accepts `multipart/form-data` uploads. Computes the SHA-256 hash server-side and compares it with the client-supplied hash to guarantee chain-of-custody integrity. Files are saved in `SKYSHIELD_MEDIA_ROOT` with collision-safe filenames (`uuid_original_name`). Enforces `SKYSHIELD_MAX_UPLOAD_MB` (default: 25 MB).
+   - **Download Endpoint (`GET /api/v1/media/<path:filename>/`):** Authenticated media delivery via session authentication. Streams the file bytes with proper MIME `Content-Type` and `Content-Disposition`.
+   - **Model Fields:** `EvidenceItem.file`, `EvidenceItem.content_type`, and `CAPA.attachments` (`0002_capa_attachments_evidenceitem_content_type_and_more.py`).
+   - **Frontend Utilities:** `src/lib/hash.ts` computes SHA-256 via browser WebCrypto `crypto.subtle.digest`.
+
+2. **M5 — Offline Replay & Idempotency (`backend/skyshield/middleware.py`, `backend/core/models.py`):**
+   - **Storage:** `IdempotencyRecord` model stores `key`, `session_key`, `request_path`, `request_method`, `request_hash`, `response_status`, `response_headers`, and `response_body`.
+   - **Middleware:** `IdempotencyMiddleware` detects incoming `Idempotency-Key` headers. When a duplicate key arrives within the same session, the middleware replays the stored 2xx response directly, appending `Idempotency-Replayed: true`. In-flight concurrency is guarded to avoid race conditions.
+
+3. **M6 — Server-Side Metrics & Analytics Calculations (`backend/core/analytics.py`):**
+   - **Metrics Endpoint (`GET /api/v1/dashboard/metrics/`):** Returns live active investigation counts, overdue CAPAs, open critical incidents, occurrence counts, severity breakdowns, 5×5 risk matrix cell distributions, and recent incident lists.
+   - **Analytics Endpoint (`GET /api/v1/analytics/`):** Computes time-series occurrence trends, CAPA SLA resolution trends, Pareto factors, 5 Whys depth distributions, and category breakdowns with support for filtering by date window, severity, aircraft, and occurrence type.
+   - **Demo Fixtures:** `seed_demo` updated and fixture data rebased to generate continuous historical distributions.
+
+### 7.2 Verification Gates Matrix
+
+| Gate | Target / Expected | Result | Notes |
+| --- | --- | --- | --- |
+| `vitest run` | 87/87 | **87/87 passed** (11 test files) | Includes 4 offline-queue tests |
+| `npm run api:test` | 118/118 | **118/118 passed** | 27 new tests for media, idempotency, analytics |
+| `npm run api:flows` | Network integration | **72/72 passed** | Live Django API + Vite preview proxy |
+| `npm run flows` | Browser mock flows | **68/68 passed** | Headless Chrome over CDP |
+| `npm run smoke` | DOM smoke sweep | **Passed** | 12 routes, click sweeps, zero errors |
+| `npm run typecheck` | Strict TypeScript | **Clean** | Zero errors |
+| `npm run lint` | ESLint | **0 errors** | 11 pre-existing warnings OK |
+| `npm run build` | Production bundle | **Passed** | Chunks generated cleanly |
+| `npm run size-gate` | $\le$ 508 kB gzip | **471.7 kB gzip** | All chunk limits met |
+
+### 7.3 Status of Remaining Milestones
+
+- **M7 (Kaggle-2015 Flight-Delay ML):** Owner-blocked. Offline training pipeline and `/api/v1/ml/delay-risk` design specified in `BACKEND_PLAN.md` §3. Awaiting owner selection of the exact Kaggle 2015 flight delays dataset variant.
+- **M8 (Assistant Chatbot):** Owner-blocked. Grounded RAG architecture and `/api/v1/assistant/chat` contract specified in `BACKEND_PLAN.md` §4. Awaiting owner selection of LLM provider.

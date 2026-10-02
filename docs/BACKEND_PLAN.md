@@ -1,10 +1,11 @@
 # SkyShield — Backend Plan
 
-Status: **M1–M3 implemented** (`backend/` — Django 5.2 + DRF, SQLite; the SPA passes
+Status: **M1–M6 implemented** (`backend/` — Django 5.2 + DRF, SQLite; the SPA passes
 its full interactive flows suite against the real API via `npm run api:flows`).
-M4–M8 below remain plan. This is the document `docs/ROADMAP.md`
-refers to for backlog milestone **M7** (Kaggle-2015 flight-delay ML) and it now also
-registers **M8** (assistant chatbot). Companion status report: `docs/BACKEND_REPORT.md`.
+Milestones M4 (file uploads & media serving), M5 (offline replay + idempotency),
+and M6 (server-side metrics/analytics) are complete. M7 (Kaggle-2015 flight-delay ML)
+and M8 (assistant chatbot) remain owner-blocked pending dataset variant confirmation
+and provider selection. Companion status report: `docs/BACKEND_REPORT.md`.
 
 ## 0. Where the frontend stands today
 
@@ -35,15 +36,15 @@ That boundary is the integration seam:
   and return `{ items, total }`-style envelopes the services expect.
 - **M3 — Workflow server-side.** ✅ *implemented (`backend/core/workflow.py`, `permissions.py`; 422/409 + same-transaction audit).* Port `lib/workflow.ts` transition guards; same-transaction
   audit writes; optimistic-lock 409s; role permissions per `SAFETY_ROLES` matrix (README).
-- **M4 — Files.** Evidence attachments (S9 compliance evidence, CAPA completion evidence)
-  become real uploads: `POST /media/` → S3/local storage; mock currently stores metadata only.
-- **M5 — Offline replay + idempotency.** Honor `Idempotency-Key` on create/update; return
-  canonical 409/422 shapes the queue already understands.
-- **M6 — Metrics/analytics server-side.** Replace client-computed dashboard/analytics payloads
-  with `/dashboard/metrics/` + `/analytics/` aggregations (charts already consume plain arrays).
-- **M7 — Kaggle-2015 flight-delay ML** (per ROADMAP). Offline training → served by Django →
+- **M4 — Files.** ✅ *implemented (`backend/core/views.py` `MediaUploadView`/`MediaDownloadView`, `models.py`, `settings.py`).* Evidence attachments (S9 compliance evidence, CAPA completion evidence)
+  are real uploads: `POST /api/v1/media/` → local storage under `SKYSHIELD_MEDIA_ROOT` with SHA-256 validation; authenticated streaming downloads via `GET /api/v1/media/<path>/`.
+- **M5 — Offline replay + idempotency.** ✅ *implemented (`backend/core/models.py` `IdempotencyRecord`, `backend/skyshield/middleware.py`).* Honors `Idempotency-Key` on create/update; replays
+  stored 2xx responses with `Idempotency-Replayed: true`; scoped to Django session keys.
+- **M6 — Metrics/analytics server-side.** ✅ *implemented (`backend/core/analytics.py`, `DashboardMetricsView`, `AnalyticsView`).* Aggregated `/dashboard/metrics/` + `/analytics/` payloads
+  computed server-side from live database tables mirroring client domain maths.
+- **M7 — Kaggle-2015 flight-delay ML** (per ROADMAP). *Owner-blocked.* Offline training → served by Django →
   predictions + detections. See §3.
-- **M8 — Assistant chatbot.** Conversational interface grounded in the register + delay-risk
+- **M8 — Assistant chatbot.** *Owner-blocked.* Conversational interface grounded in the register + delay-risk
   model + reference material. See §4.
 
 ## 2. Non-negotiables carried from the frontend

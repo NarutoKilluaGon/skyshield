@@ -245,20 +245,39 @@ switches the same functions to `fetch` against a Django REST backend. Endpoint
 paths are centralised in `ENDPOINTS`. Pure store helpers (`store-pure.ts`: date
 shifting, ref sequencing, uuids) carry vitest units (`npm run test:unit`).
 
-**The Django backend is implemented** (`backend/`, milestones M1–M3 of
+**The Django backend is implemented** (`backend/`, milestones M1–M6 of
 `docs/BACKEND_PLAN.md`): DRF + SQLite, session-cookie auth over the demo roster,
 camelCase JSON, `{ items, total, page, pageSize }` envelopes, and the full
 workflow/permission engine re-validated server-side — transition refusals answer
 `422 { reason }`, stale writes `409`, and every mutation writes its audit row in
-the same transaction. Run it:
+the same transaction.
+
+The BE-2 release completes:
+- **Media uploads & authenticated download (M4):** `POST /api/v1/media/` accepts multipart
+  evidence and attachment uploads, enforcing server-side SHA-256 hash validation
+  against the client-calculated hash (`src/lib/hash.ts`) and size limits.
+  `GET /api/v1/media/<path:filename>/` serves evidence files with session authentication
+  and proper MIME typing. Configurable via environment variables:
+  - `SKYSHIELD_MEDIA_ROOT`: directory path for uploaded media storage (default: `backend/media`).
+  - `SKYSHIELD_MAX_UPLOAD_MB`: maximum file size allowed in megabytes (default: `25`).
+- **Offline replay & Idempotency-Key support (M5):** `IdempotencyMiddleware` intercepts
+  mutating requests with an `Idempotency-Key` header, scoping records by session key
+  and replaying stored 2xx responses with `Idempotency-Replayed: true` to prevent
+  duplicate operations on reconnect or retry.
+- **Server-side metrics & analytics (M6):** `GET /api/v1/dashboard/metrics/` and
+  `GET /api/v1/analytics/` calculate KPI summaries, 5×5 risk matrix distributions,
+  CAPA SLA resolution trends, Pareto root-cause factors, and 5 Whys statistics
+  from live database tables with date-range, severity, aircraft, and type filters.
+
+Run it:
 
 ```bash
 pip install -r backend/requirements.txt
 npm run api:migrate   # create the schema
 npm run api:seed      # idempotent demo seed (fixtures exported from the mock store)
 npm run api:dev       # Django on :8000 — vite dev/preview proxy /api to it
-npm run api:test      # 91 Django tests (workflow guards, auth, data API)
-npm run api:flows     # the full 65-check flows suite against the real API
+npm run api:test      # 118 Django tests (workflow guards, auth, media, idempotency, analytics)
+npm run api:flows     # the full 72-check flows suite against the real API
 ```
 
 `api:flows` is the acceptance gate: it rebuilds with `VITE_USE_MOCK=false`,
@@ -447,7 +466,7 @@ Five layers, all driving the real application:
 | --- | --- |
 | `npm run lint` | ESLint flat config — typescript-eslint + react-hooks + jsx-a11y (0 errors gate; heuristic a11y warnings triaged against axe) |
 | `npm run typecheck` | strict TypeScript across app and tests |
-| `npm run test:unit` | vitest: store helpers (date rebasing, sequential refs), workflow state machine (full 6×6 matrix walk), permissions, risk maths, demo auth incl. PBKDF2 lockout, mention parsing, offline queue, sanitisation, formatters — 83 tests |
+| `npm run test:unit` | vitest: store helpers (date rebasing, sequential refs), workflow state machine (full 6×6 matrix walk), permissions, risk maths, demo auth incl. PBKDF2 lockout, mention parsing, offline queue, sanitisation, formatters — 87 tests |
 | `npm run build` + `npm run size-gate` | production bundle, then gzip budgets per chunk class and total |
 | `npm run smoke` | bundles the app to a classic script, mounts it in jsdom and drives it: every route renders in the shell; the landing page (outside `AppShell`) with its copy, census, internal links, the How-it-works tour (open → chapter → next → close) and 390/360px overflow; dashboard copy, risk-matrix hover card, notifications, global search; the S4 register (saved views, filters → chips → clear, persisted columns); the S5 report page (quick default, validation summary, autosave → leave guard → restore); incident-detail contracts (8 tabs, per-status primary action); the S7 RCA workspace (summary updates on edit, autosave indicator) and matrix (cell side panel, post-mitigation toggle); the reports hub (computed takeaways, compliance gap list); the shell (⌘K palette entity search → navigate, day-grouped notifications, error-boundary fallback); the stateful store (create → persisted → sequential ref → reset restores seed); the reporting loop (anonymous intake → register → triage notification, throttled resubmission, comments + @mention detection); the PWA (install metadata, offline enqueue → reconnect sync); domain correctness (HH:MMZ display, audited reporter reveal, flight-number validation); accessibility (skip link, keyboard-activated matrix cells, aria-live regions); then a **click-everything sweep** — every enabled non-destructive button on 12 routes, asserting zero console errors — and horizontal overflow at 1440/1024/768/390 |
 | `npm run flows` | headless Chrome over CDP: the guided wizard end-to-end (validation summary, computed risk 16, autosave restore across a real reload, review, submit), the quick report (default mode, selects, live risk, filing), the register (search, saved views, filter → chip → clear, column persistence across reload), all eight incident tabs, the CAPA complete → verify round-trip **and the investigator role-swap proving Verify is hidden**, the reports hub (takeaways, real filtering, blob-intercepted CSV), the command palette, the offline quick-report queue, matrix-marker navigation, sidebar collapse, and the auth pages |

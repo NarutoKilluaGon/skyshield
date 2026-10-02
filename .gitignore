@@ -28,5 +28,10 @@ yarn-error.log*
 *.log
 scripts/vendor/
 
+# media uploads
+backend/media/
+
 # local Python environment
+.venv
+.venv/
 backend/.venv/
