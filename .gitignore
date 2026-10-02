@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# python / django backend
+__pycache__/
+*.pyc
+backend/db.sqlite3
+
+# build output
+dist/
+*.tsbuildinfo
+
+# environment
+.env
+.env.local
+.env.*.local
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# logs
+npm-debug.log*
+yarn-error.log*
+*.log
+scripts/vendor/
+
+# local Python environment
+backend/.venv/

@@ -1,0 +1,4 @@
+# SkyShield API — Python dependencies (M1–M3).
+# Pinned to the versions the backend was developed and tested against.
+Django>=5.2,<5.3
+djangorestframework>=3.16,<3.19

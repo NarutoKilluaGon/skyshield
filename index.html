@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/shield.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0F1114" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      // Apply the stored theme before first paint so there is no flash.
+      try {
+        var t = localStorage.getItem('skyshield.theme') || 'dark';
+        var light = t === 'light' || (t === 'system' && matchMedia('(prefers-color-scheme: light)').matches);
+        var theme = light ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = light ? '#F3F4F5' : '#0F1114';
+      } catch (e) {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
+    <link rel="canonical" href="https://skyshield.aero/" />
+    <meta
+      name="description"
+      content="SkyShield takes occurrence reports from first sighting through investigation, root cause and corrective action, and keeps the risk score and audit trail current."
+    />
+    <meta property="og:title" content="SkyShield — Aviation Safety Management Platform" />
+    <meta property="og:description" content="Occurrence reporting, investigations, root cause analysis, CAPA and compliance monitoring." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://skyshield.aero/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SkyShield — Aviation Safety Management Platform" />
+    <meta name="twitter:description" content="Occurrence reporting, investigations, root cause analysis, CAPA and compliance monitoring." />
+    <meta name="twitter:image" content="/og-image.png" />
+    <title>SkyShield — Aviation Safety Intelligence</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "SkyShield",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "Aviation safety management system for occurrence reporting, risk triage, root cause analysis, and CAPA compliance tracking.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <main id="main-content" style="min-height: 100dvh; background-color: #0F1114; color: #ECEAE6; padding: 20px 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+          <div style="font-weight: 600; font-size: 14px; letter-spacing: 0.05em; margin-bottom: 40px; color: #ECEAE6;">SKYSHIELD</div>
+          <h1 style="font-size: 36px; font-weight: 600; line-height: 1.15; max-width: 720px; margin: 0 0 16px 0; color: #ECEAE6;">
+            From occurrence to closed corrective action.
+          </h1>
+          <p style="font-size: 16px; color: #989690; max-width: 600px; line-height: 1.5; margin: 0;">
+            SkyShield takes occurrence reports from first sighting through investigation, root cause and corrective action, and keeps the risk score and audit trail current.
+          </p>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

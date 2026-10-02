@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /incidents
+Disallow: /investigations
+Disallow: /rca
+Disallow: /capa
+Disallow: /analytics
+Disallow: /compliance
+Disallow: /settings
+
+Sitemap: https://skyshield.aero/sitemap.xml

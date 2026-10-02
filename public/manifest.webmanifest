@@ -1,0 +1,48 @@
+{
+  "name": "SkyShield — Aviation Safety Management",
+  "short_name": "SkyShield",
+  "description": "Occurrence reporting, investigations, root cause analysis, CAPA and compliance monitoring for certified operators.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0F1114",
+  "theme_color": "#0F1114",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Report an incident",
+      "short_name": "Report",
+      "description": "File an occurrence — quick report or guided wizard",
+      "url": "/incidents/report"
+    },
+    {
+      "name": "Incident register",
+      "short_name": "Register",
+      "url": "/incidents"
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "url": "/dashboard"
+    }
+  ]
+}

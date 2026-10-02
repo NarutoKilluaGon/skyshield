@@ -1,0 +1,115 @@
+import type { DashboardMetrics, KpiMetric } from '@/types'
+
+export const KPI_METRICS: KpiMetric[] = [
+  {
+    id: 'kpi_active',
+    label: 'Total Active Incidents',
+    value: 42,
+    delta: 8.4,
+    deltaLabel: '+8.4% from last month',
+    accent: 'orange',
+    series: [31, 33, 32, 35, 34, 37, 36, 38, 40, 39, 41, 42],
+    footnote: '12 high · 18 medium · 12 low',
+  },
+  {
+    id: 'kpi_investigation',
+    label: 'Under Investigation',
+    value: 18,
+    delta: -2.1,
+    deltaLabel: '6 high priority',
+    accent: 'blue',
+    series: [21, 20, 22, 19, 20, 18, 19, 17, 18, 18, 17, 18],
+    footnote: 'Median open duration 11 days',
+  },
+  {
+    id: 'kpi_rca',
+    label: 'Pending RCA',
+    value: 8,
+    delta: 14.3,
+    deltaLabel: '3 approaching SLA',
+    accent: 'amber',
+    series: [4, 5, 4, 6, 5, 6, 7, 6, 7, 8, 7, 8],
+    footnote: '2 not yet started',
+  },
+  {
+    id: 'kpi_capa_overdue',
+    label: 'Overdue CAPAs',
+    value: 3,
+    delta: -25,
+    deltaLabel: 'Requires immediate attention',
+    accent: 'red',
+    series: [7, 6, 7, 6, 5, 6, 5, 4, 5, 4, 4, 3],
+    footnote: 'Oldest overdue 19 days',
+  },
+]
+
+/** CAPA SLA monitoring — status mix by month */
+export const CAPA_SLA_SERIES = [
+  { month: 'Apr', open: 9, completed: 6, overdue: 4, dueSoon: 3 },
+  { month: 'May', open: 11, completed: 7, overdue: 5, dueSoon: 4 },
+  { month: 'Jun', open: 8, completed: 9, overdue: 3, dueSoon: 5 },
+  { month: 'Jul', open: 12, completed: 8, overdue: 6, dueSoon: 4 },
+  { month: 'Aug', open: 10, completed: 11, overdue: 4, dueSoon: 6 },
+  { month: 'Sep', open: 8, completed: 12, overdue: 3, dueSoon: 4 },
+]
+
+export const DASHBOARD_METRICS: DashboardMetrics = {
+  kpis: KPI_METRICS,
+  trend: [
+    { month: 'Oct', reported: 34, closed: 27, capex: 31 },
+    { month: 'Nov', reported: 38, closed: 30, capex: 33 },
+    { month: 'Dec', reported: 29, closed: 33, capex: 30 },
+    { month: 'Jan', reported: 36, closed: 28, capex: 34 },
+    { month: 'Feb', reported: 41, closed: 35, capex: 36 },
+    { month: 'Mar', reported: 33, closed: 32, capex: 32 },
+    { month: 'Apr', reported: 39, closed: 34, capex: 37 },
+    { month: 'May', reported: 44, closed: 36, capex: 39 },
+    { month: 'Jun', reported: 37, closed: 38, capex: 35 },
+    { month: 'Jul', reported: 31, closed: 33, capex: 34 },
+    { month: 'Aug', reported: 36, closed: 35, capex: 36 },
+    { month: 'Sep', reported: 42, closed: 31, capex: 38 },
+  ],
+  severityMix: [
+    { name: 'critical', value: 4, color: 'var(--color-crit)' },
+    { name: 'high', value: 12, color: 'var(--color-alert)' },
+    { name: 'medium', value: 18, color: 'var(--color-warn)' },
+    { name: 'low', value: 6, color: 'var(--color-ok)' },
+    { name: 'negligible', value: 2, color: 'var(--color-neutral)' },
+  ],
+  typeMix: [
+    { name: 'Engine', value: 12 },
+    { name: 'Cabin', value: 9 },
+    { name: 'Bird Strike', value: 7 },
+    { name: 'Avionics', value: 6 },
+    { name: 'Hydraulic', value: 4 },
+    { name: 'Ground', value: 3 },
+    { name: 'Tyre/Brake', value: 3 },
+  ],
+  slaCompliance: 88.4,
+  openCapas: 8,
+  completedCapas: 31,
+  overdueCapas: 3,
+  dueSoonCapas: 4,
+  totalCapas: 42,
+  rcaCompletionRate: 76,
+  capaCompletionRate: 74,
+  systemStatus: 'operational',
+  lastSyncAt: '2026-09-28T09:38:00Z',
+  capaSlaSeries: CAPA_SLA_SERIES,
+}
+
+/** Compliance trend for the analytics page */
+export const COMPLIANCE_TREND = [
+  { month: 'Oct', score: 86 },
+  { month: 'Nov', score: 87 },
+  { month: 'Dec', score: 85 },
+  { month: 'Jan', score: 88 },
+  { month: 'Feb', score: 89 },
+  { month: 'Mar', score: 88 },
+  { month: 'Apr', score: 90 },
+  { month: 'May', score: 90 },
+  { month: 'Jun', score: 91 },
+  { month: 'Jul', score: 90 },
+  { month: 'Aug', score: 91 },
+  { month: 'Sep', score: 92 },
+]

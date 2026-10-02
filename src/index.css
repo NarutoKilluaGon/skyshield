@@ -1,0 +1,1010 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   SKYSHIELD DESIGN SYSTEM — quiet, flat, neutral. Light by default.
+   Tokens only: components must not use hardcoded colours or pixel sizes.
+   ========================================================================== */
+
+@theme {
+  /* -- Surfaces (dark by default: cockpit graphite) ------------------------ */
+  --color-canvas: #0f1114;
+  --color-canvas-deep: #0b0c0e;
+  --color-sidebar: #0b0c0e;
+  --color-surface: #16181c;
+  --color-surface-2: #1c1f24;
+  --color-surface-3: #23272d;
+
+  /* -- Lines ----------------------------------------------------- */
+  --color-line: #262a30;
+  --color-line-soft: #1e2126;
+  --color-line-strong: #363b43;
+
+  /* -- Text ------------------------------------------------------ */
+  --color-ink: #eceae6;
+  --color-ink-soft: #b9b6af;
+  --color-ink-muted: #989690;
+  --color-ink-faint: #66645f;
+
+  /* -- Brand: the single brass accent ------------------------------------ */
+  --color-brand: #d6a24c;
+  --color-brand-hover: #e4b565;
+  --color-brand-wash: #2a2214;
+  --color-on-brand: #14100a;
+  --color-info: #d6a24c;
+
+  /* -- Status: fill / ink / wash (Dark default) --------------------------- */
+  --color-ok: #46b37f;
+  --color-ok-ink: #7fd3a8;
+  --color-ok-wash: #11261c;
+  --color-warn: #e2c044;
+  --color-warn-ink: #ebd26f;
+  --color-warn-wash: #262010;
+  --color-alert: #ee7b3e;
+  --color-alert-ink: #ff9f6b;
+  --color-alert-wash: #2a170d;
+  --color-crit: #e5484d;
+  --color-crit-ink: #ff8a8e;
+  --color-crit-wash: #2b1416;
+  --color-neutral: #8c8a85;
+
+  /* -- Charts: brand, comparison, ok ------------------------------------- */
+  --chart-1: var(--color-brand);
+  --chart-2: var(--color-ink-faint);
+  --chart-3: var(--color-ok);
+
+  /* -- Type: the only allowed sizes -------------------------------------- */
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-condensed: 'IBM Plex Sans Condensed', 'IBM Plex Sans', ui-sans-serif, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+  --text-xs: 0.75rem; /* 12px / 16px — headers, metadata, badges, helper */
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.8125rem; /* 13px / 20px — cells, secondary body, nav */
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.875rem; /* 14px / 22px — body, inputs, buttons */
+  --text-base--line-height: 1.375rem;
+  --text-md: 1rem; /* 16px / 24px — emphasised panel titles */
+  --text-md--line-height: 1.5rem;
+  --text-lg: 1.25rem; /* 20px / 28px — page titles */
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.75rem; /* 28px / 34px — the single hero number */
+  --text-xl--line-height: 2.125rem;
+  --text-display-1: 3.5rem; /* 56px / 58px — landing display (condensed, tracking −0.01em) */
+  --text-display-1--line-height: 3.625rem; /* 58px */
+  --text-display-2: 2.25rem; /* 36px / 40px — landing display (condensed) */
+  --text-display-2--line-height: 2.5rem; /* 40px */
+
+  /* -- Radius: 6px controls, 4px badges, 8px panels and dialogs ---------- */
+  --radius-badge: 4px;
+  --radius-panel: 8px;
+  --radius-control: 6px;
+
+  /* -- Motion ------------------------------------------------------------ */
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --animate-fade-in: fade-in 0.15s var(--ease-out-soft) both;
+  --animate-scale-in: scale-in 0.15s var(--ease-out-soft) both;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-canvas: #0f1114;
+  --color-canvas-deep: #0b0c0e;
+  --color-sidebar: #0b0c0e;
+  --color-surface: #16181c;
+  --color-surface-2: #1c1f24;
+  --color-surface-3: #23272d;
+
+  --color-line: #262a30;
+  --color-line-soft: #1e2126;
+  --color-line-strong: #363b43;
+
+  --color-ink: #eceae6;
+  --color-ink-soft: #b9b6af;
+  --color-ink-muted: #989690;
+  --color-ink-faint: #66645f;
+
+  --color-brand: #d6a24c;
+  --color-brand-hover: #e4b565;
+  --color-brand-wash: #2a2214;
+  --color-on-brand: #14100a;
+  --color-info: #d6a24c;
+
+  --color-ok: #46b37f;
+  --color-ok-ink: #7fd3a8;
+  --color-ok-wash: #11261c;
+  --color-warn: #e2c044;
+  --color-warn-ink: #ebd26f;
+  --color-warn-wash: #262010;
+  --color-alert: #ee7b3e;
+  --color-alert-ink: #ff9f6b;
+  --color-alert-wash: #2a170d;
+  --color-crit: #e5484d;
+  --color-crit-ink: #ff8a8e;
+  --color-crit-wash: #2b1416;
+  --color-neutral: #8c8a85;
+}
+
+/* Light: warm graphite and parchment option */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-canvas: #f3f4f5;
+  --color-canvas-deep: #eceef0;
+  --color-sidebar: #fafafb;
+  --color-surface: #ffffff;
+  --color-surface-2: #ffffff;
+  --color-surface-3: #eff0f2;
+
+  --color-line: #e2e4e7;
+  --color-line-soft: #eceef0;
+  --color-line-strong: #c9cdd3;
+
+  --color-ink: #14171a;
+  --color-ink-soft: #3b4046;
+  --color-ink-muted: #5e646b;
+  --color-ink-faint: #8a9098;
+
+  --color-brand: #8f5f12;
+  --color-brand-hover: #7a500e;
+  --color-brand-wash: #f6ecd9;
+  --color-on-brand: #ffffff;
+  --color-info: #8f5f12;
+
+  --color-ok: #1f8a5b;
+  --color-ok-ink: #166a46;
+  --color-ok-wash: #e5f3eb;
+  --color-warn: #c99a06;
+  --color-warn-ink: #7a5a00;
+  --color-warn-wash: #faf0cf;
+  --color-alert: #d2611e;
+  --color-alert-ink: #a94b12;
+  --color-alert-wash: #fbe9dc;
+  --color-crit: #c42b3a;
+  --color-crit-ink: #9e1f2d;
+  --color-crit-wash: #fbe6e8;
+  --color-neutral: #8c8a85;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   SEMANTIC TOKENS (shadcn/ui compatible contract)
+   ========================================================================== */
+
+@theme inline {
+  --color-background: var(--color-canvas);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-surface-2);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: var(--color-on-brand);
+  --color-secondary: var(--color-surface-3);
+  --color-secondary-foreground: var(--color-ink-soft);
+  --color-muted: var(--color-surface-3);
+  --color-muted-foreground: var(--color-ink-muted);
+  --color-accent: var(--color-surface-3);
+  --color-accent-foreground: var(--color-ink);
+  --color-destructive: var(--color-crit);
+  --color-destructive-foreground: #fff;
+  --color-border: var(--color-line);
+  --color-input: var(--color-surface);
+  --color-ring: var(--color-brand);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    /* Scroll behaviour — the internal-site scroll fix:
+       - anchor targets clear the 48px sticky landing nav (scroll-padding)
+       - smooth in-page scrolling (forced back to auto under prefers-reduced-motion) */
+    scroll-behavior: smooth;
+    scroll-padding-top: 64px;
+  }
+
+  /* The app shell's inner scrollport: no scroll chaining to the document,
+     and a stable gutter so tables don't jump when a scrollbar appears. */
+  #skyshield-main {
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Technical readouts: IDs, scores, timestamps */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  ::selection {
+    background: var(--color-brand-wash);
+    color: var(--color-ink);
+  }
+
+  /* Focus — 2px brand outline with 2px offset on every interactive element */
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  /* Scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-faint);
+    background-clip: content-box;
+  }
+
+  /* Native form controls follow the active theme */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+  input[type='date'],
+  input[type='time'],
+  input[type='datetime-local'] {
+    color-scheme: light;
+  }
+  :root[data-theme='dark'] input[type='date'],
+  :root[data-theme='dark'] input[type='time'],
+  :root[data-theme='dark'] input[type='datetime-local'] {
+    color-scheme: dark;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-ink-faint);
+  }
+  /* Hide the native date/time picker glyph in favour of a legible one */
+  input[type='date']::-webkit-calendar-picker-indicator,
+  input[type='time']::-webkit-calendar-picker-indicator,
+  input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    filter: invert(0.7) sepia(0.2) saturate(2) hue-rotate(160deg);
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+@layer utilities {
+  .pop-shadow {
+    box-shadow:
+      0 8px 24px -8px rgb(0 0 0 / 0.18),
+      0 0 0 1px var(--color-line);
+  }
+  :root[data-theme='dark'] .pop-shadow {
+    box-shadow:
+      0 8px 24px -8px rgb(0 0 0 / 0.5),
+      0 0 0 1px var(--color-line);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  /* Faint diagonal hatch used for "no data" matrix cells */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 5px,
+      rgb(128 138 152 / 0.12) 5px,
+      rgb(128 138 152 / 0.12) 6px
+    );
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION — the platform is calm by default
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* SVG SMIL is not CSS, so the map's aircraft markers are unmounted in
+     React rather than merely paused. Nothing to undo here. */
+}
+
+/* ==========================================================================
+   LANDING PAGE — flight-route flow
+   The dash pattern is expressed in SVG user units and scaled with the chart,
+   so its period is published as a variable and the animation matches it.
+   ========================================================================== */
+
+@keyframes route-flow {
+  to {
+    stroke-dashoffset: calc(var(--route-period, 11) * -1);
+  }
+}
+
+.route-leg {
+  animation: route-flow 2.6s linear infinite;
+}
+
+@keyframes clip-wipe {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.anim-wipe-1 {
+  animation: clip-wipe 500ms var(--ease-out-soft) both;
+}
+.anim-wipe-2 {
+  animation: clip-wipe 500ms var(--ease-out-soft) 90ms both;
+}
+.anim-fade-sub {
+  animation: rise-in 400ms var(--ease-out-soft) 300ms both;
+}
+.anim-panel-rise {
+  animation: rise-in 500ms var(--ease-out-soft) 350ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-leg,
+  .anim-wipe-1,
+  .anim-wipe-2,
+  .anim-fade-sub,
+  .anim-panel-rise {
+    animation: none !important;
+    clip-path: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Recharts chrome overrides (SVG focus rings / cursor) */
+.recharts-wrapper svg:focus,
+.recharts-surface:focus {
+  outline: none;
+}
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+/* ==========================================================================
+   LANDING MOTION KIT — template-adapted patterns (Cruip Open scroll reveals,
+   Aceternity/Magic UI stagger + marquee, SaaS product-tour conventions).
+   Pure CSS on top of the existing token system; every animation is
+   neutralised under prefers-reduced-motion at the bottom of this block.
+   ========================================================================== */
+
+/* --- Scroll reveal (IntersectionObserver toggles .reveal → .reveal-in) --- */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal {
+  opacity: 0;
+}
+.reveal-in {
+  animation: reveal-up 620ms var(--ease-out-soft) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+/* --- Marquee standards ticker --- */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 38s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --- Hero ambience: instrument grid + brass wash + route arc --- */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 95% 75% at 50% 0%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse 95% 75% at 50% 0%, #000 25%, transparent 78%);
+}
+.hero-glow {
+  background:
+    radial-gradient(620px 420px at 78% 4%, color-mix(in srgb, var(--color-brand) 9%, transparent), transparent 72%),
+    radial-gradient(480px 360px at 8% 88%, color-mix(in srgb, var(--color-brand) 5%, transparent), transparent 70%);
+}
+
+/* --- CTA hover shine sweep --- */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 55%;
+  background: linear-gradient(105deg, transparent, rgb(255 255 255 / 0.22), transparent);
+  transform: translateX(-170%) skewX(-14deg);
+  pointer-events: none;
+}
+.btn-shine:hover::after,
+.btn-shine:focus-visible::after {
+  animation: btn-shine 760ms var(--ease-out-soft);
+}
+@keyframes btn-shine {
+  to {
+    transform: translateX(280%) skewX(-14deg);
+  }
+}
+
+/* --- Calm hover lift for landing panels and cards --- */
+.lift {
+  transition:
+    transform 220ms var(--ease-out-soft),
+    border-color 220ms var(--ease-out-soft);
+}
+.lift:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-line-strong);
+}
+
+/* --- Guided tour: direction-aware chapter transitions + staggered items --- */
+.tour-enter-next {
+  animation: tour-next 320ms var(--ease-out-soft) both;
+}
+.tour-enter-prev {
+  animation: tour-prev 320ms var(--ease-out-soft) both;
+}
+@keyframes tour-next {
+  from {
+    opacity: 0;
+    transform: translateX(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes tour-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.tour-item {
+  animation: rise-in 440ms var(--ease-out-soft) both;
+}
+
+/* --- Tour visual primitives (used by the chapter diagrams) --- */
+.dash-draw {
+  stroke-dasharray: var(--len, 220);
+  stroke-dashoffset: var(--len, 220);
+  animation: dash-draw 1100ms var(--ease-out-soft) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes dash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.loop-spin {
+  transform-origin: center;
+  animation: loop-spin 30s linear infinite;
+}
+@keyframes loop-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.bar-grow {
+  transform-origin: bottom;
+  animation: bar-grow 720ms var(--ease-out-soft) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes bar-grow {
+  from {
+    transform: scaleY(0.04);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.packet {
+  animation: packet-x var(--dur, 2600ms) linear infinite;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes packet-x {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--travel, 160px));
+    opacity: 0;
+  }
+}
+.soft-pulse {
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.stamp-in {
+  animation: stamp-in 520ms var(--ease-out-soft) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.9) rotate(-10deg);
+  }
+  62% {
+    transform: scale(0.94) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-ink) 7%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: shimmer-x 1.8s ease-in-out infinite;
+}
+@keyframes shimmer-x {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* --- Reduced motion: the tour and reveals degrade to instant, calm states --- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1 !important;
+  }
+  .reveal-in,
+  .tour-enter-next,
+  .tour-enter-prev,
+  .tour-item,
+  .dash-draw,
+  .bar-grow,
+  .stamp-in,
+  .skeleton-shimmer::after {
+    animation: none !important;
+  }
+  .marquee-track,
+  .loop-spin,
+  .packet,
+  .soft-pulse {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .dash-draw {
+    stroke-dashoffset: 0 !important;
+  }
+  .bar-grow {
+    transform: none !important;
+  }
+  .lift {
+    transition: none !important;
+  }
+  .lift:hover {
+    transform: none !important;
+  }
+}
+
+/* Vertical variant of the packet run (platform layer diagram). */
+.packet-y {
+  animation: packet-y var(--dur, 2200ms) linear infinite;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes packet-y {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--travel, 40px));
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .packet-y {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+
+/* ==========================================================================
+   PRINT — reports, registers and records print clean (master 5.4):
+   chrome hidden, light theme forced, page breaks kept out of rows and cards.
+   ========================================================================== */
+
+/* ==========================================================================
+   TOUCH TARGETS — on coarse pointers every control grows to the 44px
+   minimum (master 6). Desktop layouts are untouched; the media query only
+   matches touch devices.
+   ========================================================================== */
+
+@media (pointer: coarse) {
+  button,
+  [role='tab'],
+  [role='option'],
+  [role='menuitem'],
+  a:not(.sr-only) {
+    min-height: 44px;
+  }
+  button[size],
+  .h-6,
+  .h-7,
+  .h-8 {
+    min-height: 40px;
+  }
+  table button,
+  [data-filter-chip] button,
+  thead button {
+    min-height: 32px;
+    min-width: 32px;
+  }
+  input,
+  select,
+  textarea {
+    min-height: 40px;
+  }
+}
+
+/* Pref-driven table density (Settings → Preferences). Attribute selector
+   outranks the per-cell padding utilities without touching components. */
+:root[data-density='compact'] table td,
+:root[data-density='compact'] table th {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+@media print {
+  /* Force the light palette regardless of the active theme. */
+  :root,
+  :root[data-theme='dark'] {
+    color-scheme: light;
+    --color-canvas: #ffffff;
+    --color-canvas-deep: #f4f5f6;
+    --color-sidebar: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-2: #ffffff;
+    --color-surface-3: #eff0f2;
+
+    --color-line: #d8dbdf;
+    --color-line-soft: #e6e8ea;
+    --color-line-strong: #c2c7cd;
+
+    --color-ink: #14171a;
+    --color-ink-soft: #3b4046;
+    --color-ink-muted: #5e646b;
+    --color-ink-faint: #8a9098;
+
+    --color-brand: #8f5f12;
+    --color-brand-hover: #7a500e;
+    --color-brand-wash: #f6ecd9;
+    --color-on-brand: #ffffff;
+
+    --color-ok: #1f8a5b;
+    --color-ok-ink: #166a46;
+    --color-ok-wash: #e5f3eb;
+    --color-warn: #c99a06;
+    --color-warn-ink: #7a5a00;
+    --color-warn-wash: #faf0cf;
+    --color-alert: #d2611e;
+    --color-alert-ink: #a94b12;
+    --color-alert-wash: #fbe9dc;
+    --color-crit: #c42b3a;
+    --color-crit-ink: #9e1f2d;
+    --color-crit-wash: #fbe6e8;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  /* Hide application chrome and interactive-only UI. */
+  aside,
+  header,
+  nav[aria-label='Primary'],
+  [role='dialog'],
+  button,
+  select,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Un-constrain the fixed-viewport shell so content flows to pages. */
+  [data-app-shell] {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  #skyshield-main {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  #skyshield-main > div {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  /* Release internal table scrollports so long tables flow onto paper,
+     and un-stick headers (position: sticky is meaningless on a page). */
+  [data-table-scroll],
+  .overflow-auto,
+  .overflow-x-auto,
+  .overflow-y-auto {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+  [data-table-scroll] th {
+    position: static !important;
+  }
+
+  /* Page-break hygiene. */
+  tr,
+  li,
+  .rounded-card,
+  .rounded-lg {
+    break-inside: avoid;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+
+  /* Charts print as their table alternatives where toggled; hide SVG motion. */
+  svg {
+    max-width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   HERO — giant wordmark, radar sweep, departure-board strip
+   (template patterns: kinetic centered wordmark, radar/arc ambience,
+   split-flap board — rebuilt on tokens, reduced-motion-safe below)
+   ========================================================================== */
+
+/* The project name, very large, center stage. Landing display exception to
+   the type scale: viewport-clamped, condensed, tight tracking. */
+.hero-wordmark {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: clamp(64px, 12.5vw, 168px);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+/* Slow brass shimmer sweeping through the wordmark. */
+.hero-wordmark-shine {
+  background: linear-gradient(
+    100deg,
+    var(--color-ink) 42%,
+    var(--color-brand-hover) 50%,
+    var(--color-ink) 58%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: name-shimmer 7s var(--ease-out-soft) 1.2s infinite;
+}
+@keyframes name-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  45%,
+  100% {
+    background-position: -60% 0;
+  }
+}
+
+/* Radar sweep behind the wordmark. */
+.radar-sweep {
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--color-brand) 13%, transparent) 34deg,
+    transparent 76deg
+  );
+  animation: loop-spin 9s linear infinite;
+}
+.radar-ring {
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--color-brand) 16%, transparent);
+}
+
+/* Departure-board strip rows: mono cells, hairline dividers, flip-in. */
+.board-row {
+  animation: board-flip 480ms var(--ease-out-soft) both;
+  animation-delay: var(--d, 0ms);
+  transform-origin: top center;
+}
+@keyframes board-flip {
+  from {
+    opacity: 0;
+    transform: perspective(320px) rotateX(-55deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.board-blink {
+  animation: soft-pulse 1.6s steps(2, jump-none) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-wordmark-shine {
+    animation: none !important;
+    background: none !important;
+    color: var(--color-ink) !important;
+  }
+  .radar-sweep {
+    animation: none !important;
+    opacity: 0.4 !important;
+  }
+  .board-row,
+  .board-blink {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

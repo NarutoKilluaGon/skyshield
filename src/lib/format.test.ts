@@ -1,0 +1,45 @@
+import { describe, expect, it } from 'vitest'
+import { daysUntil, fmtDate, fmtDateLong, fmtTime, fmtTimeLocal, timeTooltip } from './format'
+
+describe('UTC-first formatting', () => {
+  it('renders times with an explicit Z from UTC storage', () => {
+    expect(fmtTime('2026-09-26T14:32:00Z')).toBe('14:32Z')
+    expect(fmtTime('2026-09-26T00:05:00Z')).toBe('00:05Z')
+  })
+
+  it('does not shift the calendar day across time zones', () => {
+    // 18:30Z is already the next day east of UTC+5:30 — the display must not move.
+    expect(fmtDate('2026-09-26T18:30:00Z')).toBe('26/09/2026')
+    expect(fmtDateLong('2026-09-26T23:59:00Z')).toBe('26 Sep 2026')
+  })
+
+  it('handles missing and invalid values', () => {
+    expect(fmtTime(null)).toBe('—')
+    expect(fmtDate('not-a-date')).toBe('—')
+    expect(fmtDateLong(undefined)).toBe('—')
+  })
+
+  it('produces a local representation with a zone suffix', () => {
+    const local = fmtTimeLocal('2026-09-26T14:32:00Z')
+    expect(local).toMatch(/^\d{2}:\d{2}( (?:[A-Z]{2,5}|GMT[+-]\d{1,2}(?::\d{2})?))?$/)
+  })
+
+  it('pairs both representations in the tooltip', () => {
+    expect(timeTooltip('2026-09-26T14:32:00Z')).toContain('14:32Z')
+    expect(timeTooltip('2026-09-26T14:32:00Z')).toContain('local')
+    expect(timeTooltip(null)).toBe('')
+  })
+})
+
+describe('daysUntil is UTC-calendar based', () => {
+  const now = new Date('2026-10-01T12:00:00Z')
+  it('counts forward and backward in whole UTC days', () => {
+    expect(daysUntil('2026-10-04', now)).toBe(3)
+    expect(daysUntil('2026-09-29', now)).toBe(-2)
+    expect(daysUntil('2026-10-01T23:00:00Z', now)).toBe(0)
+  })
+  it('returns null for missing/invalid input', () => {
+    expect(daysUntil(null, now)).toBeNull()
+    expect(daysUntil('garbage', now)).toBeNull()
+  })
+})
